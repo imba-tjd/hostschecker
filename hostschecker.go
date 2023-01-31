@@ -208,7 +208,8 @@ func Hello(p Pair) (bool, error) {
 	defer conn.Close()
 
 	tls_conn := tls.Client(conn, conf)
-	ctx, _ := context.WithTimeout(context.Background(), timeout)
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	defer cancel()
 	err = tls_conn.HandshakeContext(ctx)
 	if err != nil {
 		return false, err
